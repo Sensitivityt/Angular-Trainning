@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 import { DxButtonModule, DxFormModule, DxSelectBoxModule, DxTextAreaModule } from 'devextreme-angular';
 import { LoginComponent } from './page/login/login.component';
 import { RegisterComponent } from './page/register/register.component';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
 
 @NgModule({
   declarations: [
@@ -19,7 +22,9 @@ import { RegisterComponent } from './page/register/register.component';
     DxFormModule,
     DxButtonModule,
     DxTextAreaModule,
-    DxSelectBoxModule
+    DxSelectBoxModule,
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

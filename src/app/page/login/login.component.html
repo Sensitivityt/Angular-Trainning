@@ -1,140 +1,43 @@
-<div class="buttons-demo">
-  <div class="buttons">
-    <div>
-      <div class="buttons-column">
-        <div class="column-header"> Normal </div>
-        <div>
-          <dx-button
-            stylingMode="contained"
-            text="Contained"
-            type="normal"
-            [width]="120"
-            (onClick)="click($event)"
-          >
-          </dx-button>
-        </div>
-        <div>
-          <dx-button
-            stylingMode="outlined"
-            text="Outlined"
-            type="normal"
-            [width]="120"
-            (onClick)="click($event)"
-          >
-          </dx-button>
-        </div>
-        <div>
-          <dx-button
-            stylingMode="text"
-            text="Text"
-            type="normal"
-            [width]="120"
-            (onClick)="click($event)"
-          >
-          </dx-button>
-        </div>
-      </div>
-      <div class="buttons-column">
-        <div class="column-header"> Success </div>
-        <div>
-          <dx-button
-            stylingMode="contained"
-            text="Contained"
-            type="success"
-            [width]="120"
-            (onClick)="click($event)"
-          >
-          </dx-button>
-        </div>
-        <div>
-          <dx-button
-            stylingMode="outlined"
-            text="Outlined"
-            type="success"
-            [width]="120"
-            (onClick)="click($event)"
-          >
-          </dx-button>
-        </div>
-        <div>
-          <dx-button
-            stylingMode="text"
-            text="Text"
-            type="success"
-            [width]="120"
-            (onClick)="click($event)"
-          >
-          </dx-button>
-        </div>
-      </div>
+<div class="parent">
+  <div class="main">
+    <input type="checkbox" id="chk" aria-hidden="true" />
+
+    <div class="signup">
+      <form>
+        <label for="chk" aria-hidden="true">Sign up</label>
+        <input type="text" name="txt" placeholder="User name" required="" />
+        <input type="email" name="email" placeholder="Email" required="" />
+        <input type="password" name="pswd" placeholder="Password" required="" />
+        <button>Sign up</button>
+      </form>
     </div>
-    <div>
-      <div class="buttons-column">
-        <div class="column-header"> Default </div>
-        <div>
-          <dx-button
-            stylingMode="contained"
-            text="Contained"
-            type="default"
-            [width]="120"
-            (onClick)="click($event)"
-          >
-          </dx-button>
-        </div>
-        <div>
-          <dx-button
-            stylingMode="outlined"
-            text="Outlined"
-            type="default"
-            [width]="120"
-            (onClick)="click($event)"
-          >
-          </dx-button>
-        </div>
-        <div>
-          <dx-button
-            stylingMode="text"
-            text="Text"
-            type="default"
-            [width]="120"
-            (onClick)="click($event)"
-          >
-          </dx-button>
-        </div>
-      </div>
-      <div class="buttons-column">
-        <div class="column-header"> Danger </div>
-        <div>
-          <dx-button
-            stylingMode="contained"
-            text="Contained"
-            type="danger"
-            [width]="120"
-            (onClick)="click($event)"
-          >
-          </dx-button>
-        </div>
-        <div>
-          <dx-button
-            stylingMode="outlined"
-            text="Outlined"
-            type="danger"
-            [width]="120"
-            (onClick)="click($event)"
-          >
-          </dx-button>
-        </div>
-        <div>
-          <dx-button
-            stylingMode="text"
-            text="Text"
-            type="danger"
-            [width]="120"
-            (onClick)="click($event)"
-          >
-          </dx-button>
-        </div>
-      </div>
+
+    <div class="login">
+      <form>
+        <label for="chk" aria-hidden="true">Login</label>
+        <input
+          type="number"
+          name="OrganizationId"
+          [(ngModel)]="loginObj.OrganizationId"
+          placeholder="Email"
+          required=""
+        />
+        <input
+          type="email"
+          name="UserName"
+          [(ngModel)]="loginObj.UserName"
+          placeholder="Email"
+          required=""
+        />
+        <input
+          type="password"
+          name="Password"
+          [(ngModel)]="loginObj.Password"
+          placeholder="Password"
+          required=""
+        />
+        <button (click)="onLogin()">Login</button>
+      </form>
     </div>
   </div>
 </div>
