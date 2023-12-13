@@ -1,46 +1,234 @@
-<dx-form id="form" [formData]="employee">
-  <dxi-item itemType="group" cssClass="first-group" [colCount]="4">
-    <dxi-item>
-      <div class="form-avatar"></div>
-    </dxi-item>
-    <dxi-item itemType="group" [colSpan]="3">
-      <dxi-item dataField="FirstName"></dxi-item>
-      <dxi-item dataField="LastName"></dxi-item>
-      <dxi-item
-        dataField="BirthDate"
-        editorType="dxDateBox"
-        [editorOptions]="{ width: '100%' }"
-      ></dxi-item>
-    </dxi-item>
-  </dxi-item>
-  <dxi-item itemType="group" cssClass="second-group" [colCount]="2">
-    <dxi-item itemType="group">
-      <dxi-item dataField="Address"></dxi-item>
-      <dxi-item dataField="City"></dxi-item>
-      <dxi-item
-        dataField="Position"
-        editorType="dxSelectBox"
-        [editorOptions]="{ items: positions, value: '' }"
-      ></dxi-item>
-    </dxi-item>
-    <dxi-item itemType="group">
-      <dxi-item
-        dataField="State"
-        editorType="dxSelectBox"
-        [editorOptions]="{ items: states }"
-      ></dxi-item>
-      <dxi-item dataField="ZipCode"></dxi-item>
-      <dxi-item
-        dataField="Mobile"
-        [label]="{ text: 'Phone' }"
-        [editorOptions]="{ mask: '+1 (000) 000-0000' }"
-      ></dxi-item>
-    </dxi-item>
-    <dxi-item
-      dataField="Notes"
-      [colSpan]="2"
-      editorType="dxTextArea"
-      [editorOptions]="{ height: 140 }"
-    ></dxi-item>
-  </dxi-item>
-</dx-form>
+<form action="your-action" (submit)="onFormSubmit($event)">
+  <div class="dx-fieldset">
+    <div class="dx-fieldset-header">Credentials</div>
+    <div class="dx-field">
+      <div class="dx-field-label">Email</div>
+      <div class="dx-field-value">
+        <dx-text-box [inputAttr]="{ 'aria-label': 'Email' }">
+          <dx-validator>
+            <dxi-validation-rule
+              type="required"
+              message="Email is required"
+            ></dxi-validation-rule>
+            <dxi-validation-rule
+              type="email"
+              message="Email is invalid"
+            ></dxi-validation-rule>
+            <dxi-validation-rule
+              type="async"
+              message="Email is already registered"
+              [validationCallback]="asyncValidation"
+            ></dxi-validation-rule>
+          </dx-validator>
+        </dx-text-box>
+      </div>
+    </div>
+    <div class="dx-field">
+      <div class="dx-field-label">Password</div>
+      <div class="dx-field-value">
+        <dx-text-box
+          [inputAttr]="{ 'aria-label': 'Password' }"
+          [mode]="passwordMode"
+          [(value)]="password"
+          (onValueChanged)="onPasswordChanged()"
+        >
+          <dxi-button
+            name="password"
+            location="after"
+            [options]="passwordButton"
+          ></dxi-button>
+          <dx-validator>
+            <dxi-validation-rule
+              type="required"
+              message="Password is required"
+            ></dxi-validation-rule>
+          </dx-validator>
+        </dx-text-box>
+      </div>
+    </div>
+    <div class="dx-field">
+      <div class="dx-field-label">Confirm Password</div>
+      <div class="dx-field-value">
+        <dx-text-box
+          [(value)]="confirmPassword"
+          [mode]="confirmPasswordMode"
+          [inputAttr]="{ 'aria-label': 'Password' }"
+        >
+          <dxi-button
+            name="password"
+            location="after"
+            [options]="confirmPasswordButton"
+          ></dxi-button>
+          <dx-validator #targetValidator>
+            <dxi-validation-rule
+              type="required"
+              message="Confirm Password is required"
+            ></dxi-validation-rule>
+            <dxi-validation-rule
+              type="compare"
+              [comparisonTarget]="passwordComparison"
+              message="Password and Confirm Password do not match"
+            ></dxi-validation-rule>
+          </dx-validator>
+        </dx-text-box>
+      </div>
+    </div>
+  </div>
+  <div class="dx-fieldset">
+    <div class="dx-fieldset-header">Personal Data</div>
+    <div class="dx-field">
+      <div class="dx-field-label">Name</div>
+      <div class="dx-field-value">
+        <dx-text-box value="Peter" [inputAttr]="{ 'aria-label': 'Name' }">
+          <dx-validator>
+            <dxi-validation-rule
+              type="required"
+              message="Name is required"
+            ></dxi-validation-rule>
+            <dxi-validation-rule
+              type="pattern"
+              [pattern]="namePattern"
+              message="Do not use digits in the Name"
+            ></dxi-validation-rule>
+            <dxi-validation-rule
+              type="stringLength"
+              [min]="2"
+              message="Name must have at least 2 symbols"
+            ></dxi-validation-rule>
+          </dx-validator>
+        </dx-text-box>
+      </div>
+    </div>
+    <div class="dx-field">
+      <div class="dx-field-label">Date of birth</div>
+      <div class="dx-field-value">
+        <dx-date-box
+          invalidDateMessage="The date must have the following format: MM/dd/yyyy"
+          [inputAttr]="{ 'aria-label': 'Date Of Birth' }"
+        >
+          <dx-validator>
+            <dxi-validation-rule
+              type="required"
+              message="Date of birth is required"
+            ></dxi-validation-rule>
+            <dxi-validation-rule
+              type="range"
+              [max]="maxDate"
+              message="You must be at least 21 years old"
+            ></dxi-validation-rule>
+          </dx-validator>
+        </dx-date-box>
+      </div>
+    </div>
+  </div>
+  <div class="dx-fieldset">
+    <div class="dx-fieldset-header">Billing address</div>
+    <div class="dx-field">
+      <div class="dx-field-label">Country</div>
+      <div class="dx-field-value">
+        <dx-select-box
+          [dataSource]="countries"
+          [inputAttr]="{ 'aria-label': 'Country' }"
+          validationMessagePosition="left"
+        >
+          <dx-validator>
+            <dxi-validation-rule
+              type="required"
+              message="Country is required"
+            ></dxi-validation-rule>
+          </dx-validator>
+        </dx-select-box>
+      </div>
+    </div>
+    <div class="dx-field">
+      <div class="dx-field-label">City</div>
+      <div class="dx-field-value">
+        <dx-text-box
+          validationMessagePosition="left"
+          [inputAttr]="{ 'aria-label': 'City' }"
+        >
+          <dx-validator>
+            <dxi-validation-rule
+              type="required"
+              message="City is required"
+            ></dxi-validation-rule>
+            <dxi-validation-rule
+              type="pattern"
+              [pattern]="cityPattern"
+              message="Do not use digits in the City name"
+            ></dxi-validation-rule>
+            <dxi-validation-rule
+              type="stringLength"
+              [min]="2"
+              message="City must have at least 2 symbols"
+            ></dxi-validation-rule>
+          </dx-validator>
+        </dx-text-box>
+      </div>
+    </div>
+    <div class="dx-field">
+      <div class="dx-field-label">Address</div>
+      <div class="dx-field-value">
+        <dx-text-box
+          validationMessagePosition="left"
+          [inputAttr]="{ 'aria-label': 'Address' }"
+        >
+          <dx-validator>
+            <dxi-validation-rule
+              type="required"
+              message="Address is required"
+            ></dxi-validation-rule>
+          </dx-validator>
+        </dx-text-box>
+      </div>
+    </div>
+    <div class="dx-field">
+      <div class="dx-field-label">Phone <i>(optional)</i></div>
+      <div class="dx-field-value">
+        <dx-text-box
+          [inputAttr]="{ 'aria-label': 'Phone' }"
+          mask="+1 (X00) 000-0000"
+          [maskRules]="phoneRules"
+          maskInvalidMessage="The phone must have a correct USA phone format"
+          validationMessagePosition="left"
+        >
+          <dx-validator>
+            <dxi-validation-rule
+              type="pattern"
+              [pattern]="phonePattern"
+              message="The phone must have a correct USA phone format"
+            ></dxi-validation-rule>
+          </dx-validator>
+        </dx-text-box>
+      </div>
+    </div>
+    <div>
+      <dx-check-box
+        id="check"
+        [value]="false"
+        text="I agree to the Terms and Conditions"
+      >
+        <dx-validator>
+          <dxi-validation-rule
+            type="compare"
+            [comparisonTarget]="checkComparison"
+            message="You must agree to the Terms and Conditions"
+          ></dxi-validation-rule>
+        </dx-validator>
+      </dx-check-box>
+    </div>
+  </div>
+
+  <div class="dx-fieldset">
+    <dx-validation-summary id="summary"></dx-validation-summary>
+
+    <dx-button
+      width="100%"
+      id="button"
+      text="Register"
+      type="success"
+      [useSubmitBehavior]="true"
+    >
+    </dx-button>
+  </div>
+</form>
